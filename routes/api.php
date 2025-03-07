@@ -29,5 +29,8 @@ Route::middleware('auth:api')->group(function () {
 
     // Attribute Routes
     Route::post('/attributes', [AttributeController::class, 'store']);
+    Route::get('/attributes', [AttributeController::class, 'index']);
+    Route::delete('/attributes/{id}', [AttributeController::class, 'destroy']);
+    
     Route::post('/projects/{id}/attributes', [AttributeController::class, 'setAttributeValues']);
 });

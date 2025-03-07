@@ -15,6 +15,25 @@ class AttributeController extends Controller
         $this->attributeService = $attributeService;
     }
 
+    public function index()
+    {
+        try {
+            $data = $this->attributeService->getAllAttributes();
+            return ResponseFormatter::format(
+                200,
+                'Attributes fetched successfuly',
+                $data
+            );
+        } catch (\Exception $e) {
+            return ResponseFormatter::format(
+                500,
+                'An error occurred',
+                [],
+                $e->getMessage()
+            );
+        }
+    }
+
     public function store(Request $request)
     {
         try {
@@ -54,6 +73,25 @@ class AttributeController extends Controller
             return ResponseFormatter::format(
                 200,
                 'Attribute set successfuly',
+                $data
+            );
+        } catch (\Exception $e) {
+            return ResponseFormatter::format(
+                500,
+                'An error occurred',
+                [],
+                $e->getMessage()
+            );
+        }
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $data = $this->attributeService->deleteAttribute($id);
+            return ResponseFormatter::format(
+                200,
+                'Attribute deleted successfuly',
                 $data
             );
         } catch (\Exception $e) {

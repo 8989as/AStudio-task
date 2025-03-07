@@ -16,9 +16,19 @@ class AttributeService
         $this->attributeValueRepository = $attributeValueRepository;
     }
 
+    public function getAllAttributes()
+    {
+        return $this->attributeRepository->all();
+    }
+
     public function createAttribute($data)
     {
         return $this->attributeRepository->create($data);
+    }
+
+    public function deleteAttribute($id)
+    {
+        return $this->attributeRepository->delete($id);
     }
 
     public function setAttributeValues($entityId, $attributes)
