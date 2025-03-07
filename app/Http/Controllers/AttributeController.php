@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ResponseFormatter;
 use App\Services\AttributeService;
 use Illuminate\Http\Request;
 
@@ -14,28 +15,54 @@ class AttributeController extends Controller
         $this->attributeService = $attributeService;
     }
 
-    
-
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'type' => 'required|in:text,number,date,select',
-        ]);
+        try {
+            $validatedData = $request->validate([
+                'name' => 'required|string|max:255',
+                'type' => 'required|in:text,number,date,select',
+            ]);
 
-        return response()->json($this->attributeService->createAttribute($data), 201);
+            $data = $this->attributeService->createAttribute($validatedData);
+
+            return ResponseFormatter::format(
+                200,
+                'Attribute created successfuly',
+                $data
+            );
+        } catch (\Exception $e) {
+            return ResponseFormatter::format(
+                500,
+                'An error occurred',
+                [],
+                $e->getMessage()
+            );
+        }
     }
 
     public function setAttributeValues(Request $request, $projectId)
     {
-        $data = $request->validate([
-            'attributes' => 'required|array',
-            'attributes.*.id' => 'required|exists:attributes,id',
-            'attributes.*.value' => 'required|string',
-        ]);
+        try {
+            $validatedData = $request->validate([
+                'attributes' => 'required|array',
+                'attributes.*.id' => 'required|exists:attributes,id',
+                'attributes.*.value' => 'required|string',
+            ]);
 
-        $this->attributeService->setAttributeValues($projectId, $data['attributes']);
+            $data = $this->attributeService->setAttributeValues($projectId, $validatedData['attributes']);
 
-        return response()->json(['message' => 'Attributes updated successfully']);
+            return ResponseFormatter::format(
+                200,
+                'Attribute set successfuly',
+                $data
+            );
+        } catch (\Exception $e) {
+            return ResponseFormatter::format(
+                500,
+                'An error occurred',
+                [],
+                $e->getMessage()
+            );
+        }
     }
 }

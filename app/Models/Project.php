@@ -11,7 +11,7 @@ class Project extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description', 'start_date', 'end_date', 'status'];
+    protected $fillable = ['name', 'department', 'description', 'start_date', 'end_date', 'status'];
 
     public function users(): BelongsToMany
     {
