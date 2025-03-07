@@ -136,19 +136,21 @@ class ProjectController extends Controller
         try {
             $request->validate([
                 'filters' => 'sometimes|array',
-                'filters.*' => 'sometimes|string',
+                'filters.*' => 'sometimes',
             ]);
 
             $filters = $request->input('filters', []);
 
-            $projects = $this->projectService->filter($filters);
+
+            $result = $this->projectService->filter($filters);
 
             return ResponseFormatter::format(
                 200,
-                'Project data retrevied successfully',
-                $projects
+                $result['message'],
+                $result['data']
             );
         } catch (\Exception $e) {
+
             return ResponseFormatter::format(
                 500,
                 'An error occurred',

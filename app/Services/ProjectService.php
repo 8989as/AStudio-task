@@ -42,6 +42,36 @@ class ProjectService
 
     public function filter(array $filters)
     {
-        return $this->projectRepository->filter($filters);
+        $query = $this->projectRepository->getFilteredProjects();
+
+        foreach ($filters as $field => $value) {
+            if (in_array($field, ['name', 'status'])) {
+                $query->where($field, 'LIKE', "%{$value}%");
+            }
+        }
+
+        foreach ($filters as $key => $value) {
+            if (!in_array($key, ['name', 'status'])) {
+                $query->whereHas('attributes', function (Builder $attrQuery) use ($key, $value) {
+                    $attrQuery->whereHas('attribute', function (Builder $attributeQuery) use ($key) {
+                        $attributeQuery->where('name', $key);
+                    })->where('value', 'LIKE', "%$value%");
+                });
+            }
+        }
+
+        $projects = $query->get();
+
+        if ($projects->isEmpty()) {
+            return [
+                'message' => 'No records found matching the applied filters',
+                'data' => []
+            ];
+        }
+
+        return [
+            'message' => 'Projects retrieved successfully',
+            'data' => $projects
+        ];
     }
 }

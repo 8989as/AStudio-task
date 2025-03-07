@@ -17,7 +17,6 @@ return new class extends Migration
             $table->unsignedBigInteger('entity_id');
             $table->string('value');
             $table->timestamps();
-            $table->index(['attribute_id', 'entity_id']);
         });
     }
 

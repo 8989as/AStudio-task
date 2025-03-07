@@ -11,7 +11,7 @@ class Project extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'department', 'description', 'start_date', 'end_date', 'status'];
+    protected $fillable = ['name', 'status'];
 
     public function users(): BelongsToMany
     {
@@ -26,5 +26,10 @@ class Project extends Model
     public function attributes()
     {
         return $this->hasMany(AttributeValue::class, 'entity_id');
+    }
+
+    public function getAttributesListAttribute()
+    {
+        return $this->attributes()->with('attribute')->get()->pluck('value', 'attribute.name');
     }
 }

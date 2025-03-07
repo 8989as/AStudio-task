@@ -14,11 +14,7 @@ return new class extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('department');
-            $table->text('description')->nullable();
             $table->enum('status', ['pending', 'in_progress', 'completed'])->default('pending');
-            $table->string('start_date')->nullable();
-            $table->string('end_date')->nullable();
             $table->timestamps();
         });
     }

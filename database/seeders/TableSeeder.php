@@ -9,7 +9,6 @@ use App\Models\Timesheet;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Carbon;
 
 class TableSeeder extends Seeder
 {
@@ -34,21 +33,13 @@ class TableSeeder extends Seeder
 
             
             $project1 = Project::create([
-                'name' => 'AStudio Project',
-                'description' => 'AStudio Project',
-                'department' => 'IT',
-                'status' => 'in_progress',
-                'start_date' => Carbon::now()->subMonth(),
-                'end_date' => Carbon::now()->addMonth()
+                'name' => 'AStudio',
+                'status' => 'in_progress'
             ]);
 
             $project2 = Project::create([
                 'name' => 'Beta Development',
-                'description' => 'Beta Development',
-                'department' => 'IT',
-                'status' => 'pending',
-                'start_date' => Carbon::now()->subMonth(),
-                'end_date' => Carbon::now()->addMonth()
+                'status' => 'in_progress'
             ]);
 
             $user1->projects()->attach($project1->id);
@@ -59,7 +50,7 @@ class TableSeeder extends Seeder
                 'user_id' => $user1->id,
                 'project_id' => $project1->id,
                 'task_name' => 'UI Design',
-                'date' => Carbon::now()->subDays(3),
+                'date' => '2025-01-01',
                 'hours' => 5,
             ]);
 
@@ -67,7 +58,7 @@ class TableSeeder extends Seeder
                 'user_id' => $user1->id,
                 'project_id' => $project2->id,
                 'task_name' => 'Database Optimization',
-                'date' => Carbon::now()->subDays(5),
+                'date' => '2025-01-01',
                 'hours' => 3,
             ]);
 
@@ -75,21 +66,21 @@ class TableSeeder extends Seeder
                 'user_id' => $user2->id,
                 'project_id' => $project1->id,
                 'task_name' => 'Frontend Development',
-                'date' => Carbon::now()->subDay(),
+                'date' => '2025-01-01',
                 'hours' => 8,
             ]);
 
             
             $departmentAttr = Attribute::create(['name' => 'department', 'type' => 'text']);
-            $startDateAttr = Attribute::create(['name' => 'Start Date', 'type' => 'date']);
-            $endDateAttr = Attribute::create(['name' => 'End Date', 'type' => 'date']);
-            $budgetAttr = Attribute::create(['name' => 'Budget', 'type' => 'number']);
+            $startDateAttr = Attribute::create(['name' => 'start_date', 'type' => 'date']);
+            $endDateAttr = Attribute::create(['name' => 'end_date', 'type' => 'date']);
+            $budgetAttr = Attribute::create(['name' => 'budget', 'type' => 'number']);
 
             
             AttributeValue::create([
                 'attribute_id' => $departmentAttr->id,
                 'entity_id' => $project1->id,
-                'value' => 'IT Department',
+                'value' => 'IT',
             ]);
 
             AttributeValue::create([
@@ -101,13 +92,13 @@ class TableSeeder extends Seeder
             AttributeValue::create([
                 'attribute_id' => $startDateAttr->id,
                 'entity_id' => $project1->id,
-                'value' => Carbon::now()->subMonth()->toDateString(),
+                'value' => '2025-02-01',
             ]);
 
             AttributeValue::create([
                 'attribute_id' => $endDateAttr->id,
                 'entity_id' => $project1->id,
-                'value' => Carbon::now()->addMonth()->toDateString(),
+                'value' => '2025-03-01',
             ]);
 
             AttributeValue::create([
